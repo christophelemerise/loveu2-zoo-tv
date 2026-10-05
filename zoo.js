@@ -88,7 +88,7 @@
         row.querySelectorAll('.cells').forEach(function (c) {
           var t = c.dataset.t;
           c.querySelectorAll('i').forEach(function (el, k) {
-            if (t[k] === ' ') return; var n = 3 + k + Math.floor(Math.random() * 3), s = 0;
+            if (t[k] === ' ') return; var n = 3 + Math.min(k, 6) + Math.floor(Math.random() * 3), s = 0;
             var iv = setInterval(function () { s++; if (s >= n) { el.textContent = t[k]; clearInterval(iv); return; } el.textContent = GLY[Math.floor(Math.random() * GLY.length)]; }, 40);
           });
         });
@@ -102,5 +102,67 @@
     var walls = document.querySelectorAll('.tvwall .tv');
     if (walls.length) setInterval(function () { Z.zap(walls[Math.floor(Math.random() * walls.length)]); }, 700);
     addEventListener('load', function () { ScrollTrigger.refresh(); });
+  };
+})(window.LOVEU2);
+
+/* ═══ Les photos réparties dans toute la page (pas de mur de télés) ═══ */
+(function (L) {
+  var Z = window.ZOO, RM = Z.RM;
+  /* Toutes les photos, dans un ordre qui alterne chanteur et scène */
+  var rest = Z.ALL.filter(function (p) { return Z.SINGER.indexOf(p) < 0; }), mix = [];
+  for (var i = 0; i < Math.max(Z.SINGER.length, rest.length); i++) { if (rest[i]) mix.push(rest[i]); if (Z.SINGER[i]) mix.push(Z.SINGER[i]); }
+  Z.MIX = mix;
+  Z.slice = function (k, n) { var per = Math.ceil(mix.length / n); return mix.slice(k * per, (k + 1) * per); };
+  function tile(id, cls) { return '<figure class="ph ' + (cls || '') + '" data-id="' + id + '"><img src="img/s/' + id + '.jpg" alt="LOVEU2 live" loading="lazy"><span class="st"></span></figure>'; }
+  /* Un clic sur n'importe quelle photo l'ouvre en grand */
+  document.addEventListener('click', function (e) { var f = e.target.closest('.ph'); if (f && !f.dataset.drag) Z.open(mix, mix.indexOf(f.dataset.id)); });
+
+  /* Rivière : une rangée qui défile toute seule ; on peut la balayer au doigt (sens naturel) ou à la souris */
+  Z.river = function (el, ids, dir) {
+    el.classList.add('river');
+    el.innerHTML = '<div class="rv">' + ids.map(function (id) { return tile(id); }).join('') + ids.map(function (id) { return tile(id); }).join('') + '</div>';
+    var hold = false, sp = (dir || 1) * .6, down = null;
+    el.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') hold = true; });
+    el.addEventListener('pointerleave', function () { hold = false; });
+    el.addEventListener('touchstart', function () { hold = true; }, { passive: true });
+    el.addEventListener('touchend', function () { setTimeout(function () { hold = false; }, 1500); });
+    el.addEventListener('pointerdown', function (e) { if (e.pointerType === 'mouse') down = { x: e.clientX, s: el.scrollLeft, m: 0 }; });
+    addEventListener('pointermove', function (e) { if (!down) return; down.m = Math.abs(e.clientX - down.x); el.scrollLeft = down.s - (e.clientX - down.x); });
+    addEventListener('pointerup', function (e) { if (!down) return; var f = e.target.closest && e.target.closest('.ph'); if (f && down.m > 6) { f.dataset.drag = 1; setTimeout(function () { delete f.dataset.drag; }, 50); } down = null; });
+    if (dir < 0) el.scrollLeft = el.scrollWidth / 2;
+    (function loop() {
+      requestAnimationFrame(loop);
+      var half = el.scrollWidth / 2; if (!half) return;
+      if (!hold && !down && !RM) el.scrollLeft += sp;
+      if (el.scrollLeft >= half) el.scrollLeft -= half; else if (el.scrollLeft <= 0) el.scrollLeft += half;
+    })();
+  };
+
+  /* Carrousel à balayer : de grandes photos, flèches, compteur */
+  Z.deck = function (el, ids) {
+    el.classList.add('deck');
+    el.innerHTML = '<div class="dk">' + ids.map(function (id) { return tile(id, 'big'); }).join('') + '</div><div class="dkbar"><button class="pv" aria-label="Previous">◀</button><span class="cnt">1 / ' + ids.length + '</span><button class="nx" aria-label="Next">▶</button></div>';
+    var dk = el.querySelector('.dk'), cnt = el.querySelector('.cnt');
+    function step(d) { var w = dk.querySelector('.ph').offsetWidth + 12; dk.scrollBy({ left: d * w, behavior: 'smooth' }); }
+    el.querySelector('.pv').onclick = function () { step(-1); }; el.querySelector('.nx').onclick = function () { step(1); };
+    dk.addEventListener('scroll', function () { var w = dk.querySelector('.ph').offsetWidth + 12; cnt.textContent = (Math.round(dk.scrollLeft / w) + 1) + ' / ' + ids.length; });
+    /* il avance tout seul tant que personne n'y touche */
+    var last = 0; dk.addEventListener('pointerdown', function () { last = Date.now(); }); dk.addEventListener('wheel', function () { last = Date.now(); }, { passive: true });
+    if (!RM) setInterval(function () { var r = dk.getBoundingClientRect(); if (Date.now() - last < 6000 || r.bottom < 0 || r.top > innerHeight) return; if (dk.scrollLeft + dk.clientWidth >= dk.scrollWidth - 4) dk.scrollTo({ left: 0, behavior: 'smooth' }); else step(1); }, 2600);
+  };
+
+  /* Bande de photos en grille, qui arrive en glitch */
+  Z.band = function (el, ids) {
+    el.classList.add('band');
+    el.innerHTML = ids.map(function (id, i) { return tile(id, i % 7 === 0 ? 'wide' : ''); }).join('');
+    if (!RM && window.gsap) gsap.from(el.querySelectorAll('.ph'), { clipPath: 'inset(0 100% 0 0)', x: function (i) { return i % 2 ? 20 : -20; }, duration: .45, ease: 'power3.out', stagger: .03, scrollTrigger: { trigger: el, start: 'top 85%' }, clearProps: 'transform,clipPath' });
+  };
+
+  /* Rails latéraux (ordinateur) : deux colonnes de photos qui glissent en sens inverse pendant tout le défilement */
+  Z.rails = function (left, right) {
+    var mk = function (ids) { var d = document.createElement('div'); d.className = 'rail'; d.innerHTML = '<div class="rl">' + ids.concat(ids).map(function (id) { return tile(id); }).join('') + '</div>'; document.body.appendChild(d); return d; };
+    var a = mk(left), b = mk(right); b.classList.add('r');
+    var ra = a.querySelector('.rl'), rb = b.querySelector('.rl'), t = 0;
+    (function loop() { requestAnimationFrame(loop); if (RM) return; t += .35; var h = ra.scrollHeight / 2, y = (scrollY * .5 + t) % h; ra.style.transform = 'translateY(' + (-y) + 'px)'; rb.style.transform = 'translateY(' + (-(h - y)) + 'px)'; })();
   };
 })(window.LOVEU2);

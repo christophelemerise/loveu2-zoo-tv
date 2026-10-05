@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>LOVEU2 · Control Room</title>
+<title>LOVEU2 · Swipe Decks</title>
 <meta name="description" content="LOVEU2 – The U2 Experience. U2 tribute band from Canada, performing worldwide.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=VT323&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -31,13 +31,19 @@
 .cam span{position:absolute;left:10px;bottom:4px;font:20px VT323}
 .cam:hover,.cam.on{background:var(--g);color:#000}
 .cam.live{background:var(--red);color:#fff}
+.withrails main{padding:0 clamp(120px,11vw,190px)}
+@media(max-width:1000px){.withrails main{padding:0}}
+.mob{display:none}
+@media(max-width:1000px){.mob{display:block}}
+
 </style>
 </head>
 <body>
 <nav class="nav">
   <a class="lg" href="#top"><img src="img/logo.png" alt="LOVEU2"></a>
-  <div class="r"><a class="k" href="#dates">DATES</a><a class="k" href="#photos">PHOTOS</a><a class="k" href="#video">VIDEO</a><a class="k" href="#booking">BOOKING</a><a class="k cta onair" href="#dates"><i></i>TICKETS</a></div>
+  <div class="r"><a class="k" href="#dates">DATES</a><a class="k" href="#video">VIDEO</a><a class="k" href="#booking">BOOKING</a><a class="k cta onair" href="#dates"><i></i>TICKETS</a></div>
 </nav>
+<main>
 
 <header class="hero" id="top">
   <div class="desk">
@@ -49,8 +55,11 @@
   </div>
   <div class="cams" id="cams"></div>
 </header>
-
 <div class="ticker"><div id="tickerI"></div></div>
+
+<div class="wrap"><div class="kick" style="margin:0">&gt; SWIPE THE SHOW · 1</div></div>
+
+<div id="d0" style="margin:16px 0 40px"></div>
 
 <section class="air">
   <div class="wrap">
@@ -69,15 +78,11 @@
   </div>
 </section>
 
-<section class="sec" id="photos" style="padding-top:0">
-  <div class="wrap">
-    <div class="kick">&gt; 74 CHANNELS · CLICK TO WATCH</div>
-    <h2 class="h">The <span class="gr">TV</span> <span class="or">wall</span></h2>
-    <div class="tvwall" id="tvwall"></div>
-  </div>
-</section>
+<div class="wrap"><div class="kick" style="margin:0">&gt; SWIPE THE SHOW · 2</div></div>
 
-<section class="sec" id="video" style="padding-top:0">
+<div id="d1" style="margin:16px 0 0"></div>
+
+<section class="sec" id="video">
   <div class="wrap">
     <div class="kick">&gt; PLAYBACK</div>
     <h2 class="h">Watch <span class="gr">the</span> <span class="or">show</span></h2>
@@ -85,14 +90,21 @@
   </div>
 </section>
 
-<section class="sec" id="booking" style="padding-top:0">
+<div class="wrap"><div class="kick" style="margin:0">&gt; SWIPE THE SHOW · 3</div></div>
+
+<div id="d2" style="margin:16px 0 0"></div>
+
+<section class="sec" id="booking">
   <div class="wrap">
     <div class="kick">&gt; SELECT YOUR CHANNEL</div>
     <h2 class="h">Book <span class="y">LOVEU2</span></h2>
     <div class="chs" id="chs"></div>
   </div>
 </section>
-<footer><div class="wrap"><span>© LOVEU2 · THE U2 EXPERIENCE</span><a href="https://www.facebook.com/loveU2.ca" target="_blank" rel="noopener">FACEBOOK ▶</a></div></footer>
+
+</main>
+<nav class="switch" aria-label="Layouts"><a href="1-rivers.html" class="">1 · RIVERS</a><a href="2-side-rails.html" class="">2 · SIDE RAILS</a><a href="3-photo-dates.html" class="">3 · PHOTO DATES</a><a href="4-swipe-decks.html" class="on">4 · SWIPE DECKS</a><a href="5-glitch-bands.html" class="">5 · GLITCH BANDS</a></nav>
+<footer style="padding-bottom:80px"><div class="wrap"><span>© LOVEU2 · THE U2 EXPERIENCE</span><a href="https://www.facebook.com/loveU2.ca" target="_blank" rel="noopener">FACEBOOK ▶</a></div></footer>
 
 <script src="data.js"></script>
 <script src="common.js"></script>
@@ -102,6 +114,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
 var L = window.LOVEU2, U = L.upcoming, Z = window.ZOO, RM = Z.RM, N = Z.next;
+gsap.registerPlugin(ScrollTrigger);
 Z.fill();
 Z.type(document.getElementById('type'), ['THE U2 EXPERIENCE', 'CLICK A CAMERA TO CUE IT', 'NEXT: ' + L.place(N.city).toUpperCase()]);
 /* La régie : six caméras ; on en met une en préparation (PVW), puis elle passe à l'antenne (PGM) */
@@ -117,6 +130,7 @@ marks();
 if (!RM) setInterval(function () { if (Date.now() - (cams.last || 0) < 4000) return; var n; do { n = Math.floor(Math.random() * CAMS.length); } while (n === pg); cue(n); setTimeout(cut, 900); }, 3600);
 cams.addEventListener('pointerdown', function () { cams.last = Date.now(); });
 if (!RM) gsap.timeline({ delay: .1 }).from('.mon', { scaleY: .02, opacity: 0, duration: .4, ease: 'power4.out', stagger: .12 }).from('.cam', { y: 30, opacity: 0, duration: .35, stagger: .05, ease: 'back.out(2)', clearProps: 'transform,opacity' }, .3).from('.right .ttl', { x: 40, opacity: 0, duration: .5 }, .4);
+for (var k = 0; k < 3; k++) Z.deck(document.getElementById('d' + k), Z.slice(k, 3));
 Z.animate();
 </script>
 </body>
