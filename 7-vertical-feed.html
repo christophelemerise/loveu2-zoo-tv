@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>LOVEU2 · Vertical Feed</title>
+<meta name="description" content="LOVEU2 – The U2 Experience. U2 tribute band from Canada, performing worldwide.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=VT323&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="zoo.css">
+<style>
+.hero{position:relative;min-height:100svh;padding:84px 16px 30px;background:#000;display:grid;align-content:center;justify-items:center;gap:18px}
+.head{text-align:center}
+.head .gt{font-size:clamp(50px,8vw,130px)}
+.head .tag{font:24px VT323;color:var(--yl);margin-top:6px}
+.feeds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,1.4vw,16px);width:min(1100px,100%)}
+@media(max-width:760px){.feeds{grid-template-columns:1fr;width:min(380px,100%)}.feeds .feed:nth-child(n+2){display:none}}
+.feed{position:relative;aspect-ratio:9/16;max-height:72svh;border-radius:26px;overflow:hidden;background:#111;box-shadow:0 0 0 3px #1c1c1c}
+.feed img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%;transition:opacity .3s}
+.feed .pr{position:absolute;left:10px;right:10px;top:10px;display:flex;gap:4px;z-index:3}
+.feed .pr i{flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.35);overflow:hidden}
+.feed .pr i b{display:block;height:100%;width:0;background:#fff}
+.feed .who{position:absolute;left:12px;top:24px;z-index:3;display:flex;align-items:center;gap:8px;font:22px VT323;text-shadow:0 0 6px #000}
+.feed .who em{font-style:normal;padding:0 8px;border-radius:4px;background:var(--red)}
+.feed .bot{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:40px 14px 14px;background:linear-gradient(transparent,rgba(0,0,0,.6));font:400 clamp(18px,1.8vw,24px)/1.1 "Archivo Black";text-transform:uppercase}
+.feed .bot small{display:block;font:20px VT323;color:var(--yl);text-transform:none}
+.feed .nav2{position:absolute;inset:0;display:flex;z-index:2}.feed .nav2 b{flex:1;cursor:pointer}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a class="lg" href="#top"><img src="img/logo.png" alt="LOVEU2"></a>
+  <div class="r"><a class="k" href="#dates">DATES</a><a class="k" href="#photos">PHOTOS</a><a class="k" href="#video">VIDEO</a><a class="k" href="#booking">BOOKING</a><a class="k cta onair" href="#dates"><i></i>TICKETS</a></div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="head"><h1 class="gt" data-t="LOVEU2">LOVEU2</h1><div class="tag">THE U2 EXPERIENCE · LIVE FEEDS · TAP TO SKIP</div></div>
+  <div class="feeds" id="feeds"></div>
+</header>
+
+<div class="ticker"><div id="tickerI"></div></div>
+
+<section class="air">
+  <div class="wrap">
+    <div><div class="k onair"><i></i>NEXT BROADCAST</div><div class="city" id="aCity"></div><div class="venue" id="aVenue"></div></div>
+    <div class="clock" id="clock"></div>
+    <a class="pill" id="aBtn" target="_blank" rel="noopener">Get tickets ▶</a>
+  </div>
+</section>
+
+<section class="sec" id="dates">
+  <div class="wrap">
+    <div class="kick">&gt; DEPARTURES · WORLD TOUR</div>
+    <h2 class="h">Upcoming <span class="y">shows</span></h2>
+    <div class="flaps" id="flaps"></div>
+    <details class="archive"><summary id="archT"></summary><div class="arch" id="arch"></div></details>
+  </div>
+</section>
+
+<section class="sec" id="photos" style="padding-top:0">
+  <div class="wrap">
+    <div class="kick">&gt; 74 CHANNELS · CLICK TO WATCH</div>
+    <h2 class="h">The <span class="gr">TV</span> <span class="or">wall</span></h2>
+    <div class="tvwall" id="tvwall"></div>
+  </div>
+</section>
+
+<section class="sec" id="video" style="padding-top:0">
+  <div class="wrap">
+    <div class="kick">&gt; PLAYBACK</div>
+    <h2 class="h">Watch <span class="gr">the</span> <span class="or">show</span></h2>
+    <div class="vid" id="vid" role="button" tabindex="0" aria-label="Play video"><img id="vthumb" alt="" onerror="this.src='img/p00098.jpg'"><div class="rec"><i></i>REC</div><div class="pl">▶ PLAY</div></div>
+  </div>
+</section>
+
+<section class="sec" id="booking" style="padding-top:0">
+  <div class="wrap">
+    <div class="kick">&gt; SELECT YOUR CHANNEL</div>
+    <h2 class="h">Book <span class="y">LOVEU2</span></h2>
+    <div class="chs" id="chs"></div>
+  </div>
+</section>
+<footer><div class="wrap"><span>© LOVEU2 · THE U2 EXPERIENCE</span><a href="https://www.facebook.com/loveU2.ca" target="_blank" rel="noopener">FACEBOOK ▶</a></div></footer>
+
+<script src="data.js"></script>
+<script src="common.js"></script>
+<script src="photos.js"></script>
+<script src="zoo.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+var L = window.LOVEU2, U = L.upcoming, Z = window.ZOO, RM = Z.RM, N = Z.next;
+Z.fill();
+/* Trois écrans verticaux, chacun fait défiler ses portraits du chanteur comme des stories */
+var FEEDS = [
+  { t: 'On stage', s: ['p00099', 'p00087', 'p00003', 'p00069'] },
+  { t: 'Next: ' + L.place(N.city), s: ['p00030', 'p00081', 'p00050', 'p00018'] },
+  { t: 'The tour', s: ['p00005', 'p00011', 'p00015', 'p00074'] }];
+var box = document.getElementById('feeds');
+box.innerHTML = FEEDS.map(function (f, k) { return '<div class="feed" data-k="' + k + '"><img src="img/' + f.s[0] + '.jpg" alt="LOVEU2 singer"><div class="pr">' + f.s.map(function () { return '<i><b></b></i>'; }).join('') + '</div><div class="who"><em>LIVE</em>LOVEU2</div><div class="nav2"><b data-d="-1"></b><b data-d="1"></b></div><div class="bot">' + f.t + '<small>' + (k === 1 ? L.fmt(N.iso, 'short') + ' · ' + N.venue : 'The U2 Experience') + '</small></div></div>'; }).join('');
+FEEDS.forEach(function (f, k) {
+  var el = box.children[k], img = el.querySelector('img'), bars = el.querySelectorAll('.pr b'), i = 0, tw;
+  f.s.forEach(function (p) { var im = new Image(); im.src = 'img/' + p + '.jpg'; });
+  function show(n) {
+    i = (n + f.s.length) % f.s.length; img.src = 'img/' + f.s[i] + '.jpg';
+    bars.forEach(function (b, j) { gsap.set(b, { width: j < i ? '100%' : '0%' }); });
+    if (tw) tw.kill();
+    if (!RM) tw = gsap.to(bars[i], { width: '100%', duration: 3.4, ease: 'none', delay: k * .4, onComplete: function () { show(i + 1); } });
+    else gsap.set(bars[i], { width: '100%' });
+  }
+  el.querySelector('.nav2').addEventListener('click', function (e) { var d = e.target.dataset.d; if (d) show(i + (+d)); });
+  show(0);
+});
+if (!RM) gsap.from('.feed', { y: 80, opacity: 0, duration: .7, ease: 'expo.out', stagger: .12, delay: .1 });
+Z.animate();
+</script>
+</body>
+</html>

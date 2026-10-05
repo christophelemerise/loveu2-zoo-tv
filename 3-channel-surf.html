@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>LOVEU2 · Channel Surf</title>
+<meta name="description" content="LOVEU2 – The U2 Experience. U2 tribute band from Canada, performing worldwide.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=VT323&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="zoo.css">
+<style>
+.hero{position:relative;min-height:100svh;padding:90px 16px 40px;background:radial-gradient(ellipse at 50% 40%,#1d1d1d,#000 70%);display:grid;place-items:center}
+.set{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;width:min(1180px,100%)}
+@media(max-width:860px){.set{grid-template-columns:1fr}}
+.crt{position:relative;border-radius:46px;background:linear-gradient(#2a2a2a,#141414);padding:clamp(14px,2vw,26px);box-shadow:0 40px 100px rgba(0,0,0,.8),inset 0 0 0 2px #333}
+.crt .tv{aspect-ratio:4/3;border-radius:32px}
+.crt .tv img{object-position:50% 25%}
+.crt .tv::after{content:"";position:absolute;inset:0;border-radius:32px;box-shadow:inset 0 0 90px rgba(0,0,0,.55);pointer-events:none}
+.crt .osd{position:absolute;top:clamp(26px,3.6vw,48px);right:clamp(28px,3.6vw,50px);font:clamp(40px,5vw,68px)/1 VT323;color:var(--g);text-shadow:0 0 12px var(--g),0 0 2px #000;z-index:3}
+.crt .cap{position:absolute;left:clamp(28px,3.6vw,50px);bottom:clamp(26px,3.6vw,46px);z-index:3;font:400 clamp(20px,2.6vw,34px)/1 "Archivo Black";text-transform:uppercase;text-shadow:0 4px 20px #000}
+.crt .knobs{position:absolute;right:-18px;top:30%;display:flex;flex-direction:column;gap:14px}
+.crt .knobs i{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#777,#222)}
+.side{display:flex;flex-direction:column;gap:18px;align-items:center;text-align:center}
+.side .gt{font-size:clamp(54px,7vw,110px)}
+.side .tag{font:28px VT323;color:var(--yl)}
+.remote{width:150px;padding:20px 16px;border-radius:36px;background:linear-gradient(#262626,#111);box-shadow:inset 0 0 0 2px #333,0 20px 40px rgba(0,0,0,.6);display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.remote button{font:26px VT323;border:0;border-radius:12px;padding:10px 0;background:#333;color:#fff;cursor:pointer;transition:background .15s,scale .1s}
+.remote button:active{scale:.92}
+.remote button:hover{background:var(--yl);color:#000}
+.remote .pw{grid-column:1/3;background:var(--red)}
+.remote .lbl{grid-column:1/3;font:18px VT323;color:#888}
+@media(max-width:860px){.side{flex-direction:row;flex-wrap:wrap;justify-content:center}.remote{width:auto;grid-template-columns:repeat(4,1fr)}.remote .pw,.remote .lbl{grid-column:auto}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a class="lg" href="#top"><img src="img/logo.png" alt="LOVEU2"></a>
+  <div class="r"><a class="k" href="#dates">DATES</a><a class="k" href="#photos">PHOTOS</a><a class="k" href="#video">VIDEO</a><a class="k" href="#booking">BOOKING</a><a class="k cta onair" href="#dates"><i></i>TICKETS</a></div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="set">
+    <div class="crt"><div class="tv" id="screen"><img src="img/p00099.jpg" alt="LOVEU2 singer"><div class="st"></div></div><div class="osd" id="osd">CH 1</div><div class="cap" id="cap">The voice</div><div class="knobs"><i></i><i></i></div></div>
+    <div class="side">
+      <h1 class="gt" data-t="LOVEU2">LOVEU2</h1>
+      <div class="tag"><span id="type"></span><span class="cursor"></span></div>
+      <div class="remote" id="remote"><button class="pw" data-a="auto">AUTO</button><button data-a="-1">CH ▼</button><button data-a="1">CH ▲</button><button data-a="r">RANDOM</button><button data-a="t">TICKETS</button><div class="lbl">TRY THE REMOTE</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="ticker"><div id="tickerI"></div></div>
+
+<section class="air">
+  <div class="wrap">
+    <div><div class="k onair"><i></i>NEXT BROADCAST</div><div class="city" id="aCity"></div><div class="venue" id="aVenue"></div></div>
+    <div class="clock" id="clock"></div>
+    <a class="pill" id="aBtn" target="_blank" rel="noopener">Get tickets ▶</a>
+  </div>
+</section>
+
+<section class="sec" id="dates">
+  <div class="wrap">
+    <div class="kick">&gt; DEPARTURES · WORLD TOUR</div>
+    <h2 class="h">Upcoming <span class="y">shows</span></h2>
+    <div class="flaps" id="flaps"></div>
+    <details class="archive"><summary id="archT"></summary><div class="arch" id="arch"></div></details>
+  </div>
+</section>
+
+<section class="sec" id="photos" style="padding-top:0">
+  <div class="wrap">
+    <div class="kick">&gt; 74 CHANNELS · CLICK TO WATCH</div>
+    <h2 class="h">The <span class="gr">TV</span> <span class="or">wall</span></h2>
+    <div class="tvwall" id="tvwall"></div>
+  </div>
+</section>
+
+<section class="sec" id="video" style="padding-top:0">
+  <div class="wrap">
+    <div class="kick">&gt; PLAYBACK</div>
+    <h2 class="h">Watch <span class="gr">the</span> <span class="or">show</span></h2>
+    <div class="vid" id="vid" role="button" tabindex="0" aria-label="Play video"><img id="vthumb" alt="" onerror="this.src='img/p00098.jpg'"><div class="rec"><i></i>REC</div><div class="pl">▶ PLAY</div></div>
+  </div>
+</section>
+
+<section class="sec" id="booking" style="padding-top:0">
+  <div class="wrap">
+    <div class="kick">&gt; SELECT YOUR CHANNEL</div>
+    <h2 class="h">Book <span class="y">LOVEU2</span></h2>
+    <div class="chs" id="chs"></div>
+  </div>
+</section>
+<footer><div class="wrap"><span>© LOVEU2 · THE U2 EXPERIENCE</span><a href="https://www.facebook.com/loveU2.ca" target="_blank" rel="noopener">FACEBOOK ▶</a></div></footer>
+
+<script src="data.js"></script>
+<script src="common.js"></script>
+<script src="photos.js"></script>
+<script src="zoo.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+var L = window.LOVEU2, U = L.upcoming, Z = window.ZOO, RM = Z.RM, N = Z.next;
+Z.fill();
+Z.type(document.getElementById('type'), ['THE U2 EXPERIENCE', 'NOW ON ' + U.length + ' CHANNELS']);
+/* La télé passe d'une chaîne à l'autre toute seule ; la télécommande prend la main */
+var CH = [['p00099', 'The voice'], ['p00030', 'Under the flag'], ['p00087', 'Close-up'], ['p00081', 'Red & blue'], ['p00003', 'Shades on'], ['p00050', 'Side by side'], ['p00011', 'Megaphone'], ['p00005', 'Spotlight'], ['p00064', 'With the band'], ['p00023', 'Black & white']];
+var scr = document.getElementById('screen'), osd = document.getElementById('osd'), cap = document.getElementById('cap'), ch = 0, auto = true;
+function go(k) { ch = (k + CH.length) % CH.length; Z.zap(scr, 'img/' + CH[ch][0] + '.jpg'); osd.textContent = 'CH ' + (ch + 1); cap.textContent = CH[ch][1]; if (!RM) gsap.fromTo(osd, { scale: 1.4 }, { scale: 1, duration: .3 }); }
+CH.forEach(function (c) { var i = new Image(); i.src = 'img/' + c[0] + '.jpg'; });
+if (!RM) setInterval(function () { if (auto) go(ch + 1); }, 2800);
+document.getElementById('remote').addEventListener('click', function (e) {
+  var a = e.target.closest('button'); if (!a) return; a = a.dataset.a;
+  if (a === 'auto') { auto = !auto; e.target.textContent = auto ? 'AUTO' : 'MANUAL'; return; }
+  if (a === 't') { location.href = '#dates'; return; }
+  auto = false; document.querySelector('.remote .pw').textContent = 'MANUAL';
+  go(a === 'r' ? Math.floor(Math.random() * CH.length) : ch + (+a));
+});
+if (!RM) gsap.timeline({ delay: .15 }).from('.crt', { scale: .85, opacity: 0, duration: .7, ease: 'expo.out' }).from('#screen', { scaleY: .02, duration: .4, ease: 'power4.out' }, .3).from('.side > *', { x: 40, opacity: 0, duration: .5, stagger: .1, ease: 'expo.out' }, .5);
+Z.animate();
+</script>
+</body>
+</html>
